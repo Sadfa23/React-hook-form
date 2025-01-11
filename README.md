@@ -1,7 +1,7 @@
-##React Hook Form
+## React Hook Form
 React Hook Form is a lightweight and performant library for managing forms in React applications. It leverages React's hooks API to provide a simple and intuitive way to handle form validation, submission, and state management. With minimal re-renders, it ensures optimal performance and a seamless user experience.
 
-Key Features:
+### Key Features:
 
 Easy integration with existing forms
 
