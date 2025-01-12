@@ -1,14 +1,26 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm ,type FieldValues} from 'react-hook-form';
+import { z } from 'zod'
 
-function SignUpRhf() {
+function SignUpRhfZod() {
+    const signUpSchema = z
+    .object({
+        username: z.string().min(8, 'Username must be atleast 8 characters'),
+        email:z.string().email(),
+        password:z.string().min(5,'Password must be atleast 5 characters'),
+        confirmPassword:z.string()
+    }).refine((data)=>data.password === data.confirmPassword,{
+        message:'Passwords must match',
+        path:['confirmPassword']
+    })
+
     const{register,
-         getValues,
          handleSubmit,
          reset, 
-         formState: { isSubmitting, errors }}=useForm();
+         formState: { isSubmitting, errors }}=useForm({resolver:zodResolver(signUpSchema)});
 
          const onSubmit = async (data: FieldValues) => {
             // TODO: submit to server
@@ -24,13 +36,7 @@ function SignUpRhf() {
     onSubmit={handleSubmit(onSubmit)}>
         <input 
         {
-            ...register('username',{
-                required: true,
-                minLength: {
-                    value:8,
-                    message:'Username must be atleast 8 characters long'
-                }
-            })
+            ...register('username')
         }
         type="username" 
         placeholder='Enter your username'/>
@@ -42,16 +48,12 @@ function SignUpRhf() {
 
         <input 
         {
-            ...register('email',{
-                required:'Email is required',
-            })
+            ...register('email')
         }
         type="email"
         placeholder='Enter your email'/>
         <input {
-            ...register('password',{
-                required:'Password is required'
-            })
+            ...register('password')
         }
         type="password" 
         placeholder='Enter your password'/>
@@ -61,10 +63,7 @@ function SignUpRhf() {
 
         <input 
         {
-            ...register('confirmPassword',{
-                required:'This field cannot be left blank',
-                validate:(value)=>value===getValues('password')||'Passwords must match'
-            })
+            ...register('confirmPassword')
         }
         type="password"
         placeholder='Confirm password'/>
@@ -82,4 +81,4 @@ function SignUpRhf() {
   )
 }
 
-export default SignUpRhf
+export default SignUpRhfZod

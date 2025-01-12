@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 
-
 function SignUp() {
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
